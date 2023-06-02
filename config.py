@@ -9,6 +9,7 @@ LAYERS_CONFIG = {
             "value_range": (0, 255),
         },
         "control_args": {},
+        "is_compatible_with_bbox": False,
     },
     "AugMix": {
         "layer_cls": keras_cv.layers.AugMix,
@@ -35,6 +36,7 @@ LAYERS_CONFIG = {
         "control_args": {
             "groups": [1, 3],
         },
+        "is_compatible_with_bbox": False,
     },
     "GridMask": {
         "layer_cls": keras_cv.layers.GridMask,
@@ -48,6 +50,7 @@ LAYERS_CONFIG = {
             "rotation_factor": (-90.0, 90.0),
             "fill_mode": ["constant", "gaussian_noise"],
         },
+        "is_compatible_with_bbox": False,
     },
     "RandomChannelShift": {
         "layer_cls": keras_cv.layers.RandomChannelShift,
@@ -59,6 +62,7 @@ LAYERS_CONFIG = {
         "control_args": {
             "factor": [0.1, 1.0],
         },
+        "is_compatible_with_bbox": False,
     },
     "RandomColorDegeneration": {
         "layer_cls": keras_cv.layers.RandomColorDegeneration,
@@ -68,6 +72,7 @@ LAYERS_CONFIG = {
         "control_args": {
             "factor": [0.0, 1.0],
         },
+        "is_compatible_with_bbox": False,
     },
     "RandomCutout": {
         "layer_cls": keras_cv.layers.RandomCutout,
@@ -82,6 +87,7 @@ LAYERS_CONFIG = {
             "width_factor": (0.1, 1.0),
             "fill_mode": ["constant", "gaussian_noise"]
         },
+        "is_compatible_with_bbox": False,
     },
     "RandomHue": {
         "layer_cls": keras_cv.layers.RandomHue,
@@ -92,6 +98,7 @@ LAYERS_CONFIG = {
         "control_args": {
             "factor": [0.0, 1.0],
         },
+        "is_compatible_with_bbox": False,
     },
     "RandomSaturation": {
         "layer_cls": keras_cv.layers.RandomSaturation,
@@ -101,6 +108,29 @@ LAYERS_CONFIG = {
         "control_args": {
             "factor": [0.0, 1.0],
         },
+        "is_compatible_with_bbox": False,
+    },
+    "RandomContrast": {
+        "layer_cls": keras_cv.layers.RandomContrast,
+        "layer_args": {
+            "value_range": (0, 255),
+            "factor": 0.0,
+        },
+        "control_args": {
+            "factor": [0.0, 1.0],
+        },
+        "is_compatible_with_bbox": False,
+    },
+    "RandomBrightness": {
+        "layer_cls": keras_cv.layers.RandomBrightness,
+        "layer_args": {
+            "value_range": (0, 255),
+            "factor": 0.0,
+        },
+        "control_args": {
+            "factor": [0.0, 1.0],
+        },
+        "is_compatible_with_bbox": False,
     },
     "RandomSharpness": {
         "layer_cls": keras_cv.layers.RandomSharpness,
@@ -111,6 +141,7 @@ LAYERS_CONFIG = {
         "control_args": {
             "factor": (0.0, 1.0),
         },
+        "is_compatible_with_bbox": False,
     },
     "RandomShear": {
         "layer_cls": keras_cv.layers.RandomShear,
@@ -120,7 +151,6 @@ LAYERS_CONFIG = {
             "interpolation": "bilinear",
             "fill_mode": "reflect",
             "fill_value": 0.0,
-            "bounding_box_format": None,
         },
         "control_args": {
             "x_factor": (0.0, 1.0),
@@ -128,6 +158,61 @@ LAYERS_CONFIG = {
             "interpolation": ["bilinear", "nearest"],
             "fill_mode": ["reflect", "wrap", "constant", "nearest"],
         },
+        "is_compatible_with_bbox": True,
+    },
+    "RandomCrop": {
+        "layer_cls": keras_cv.layers.RandomCrop,
+        "layer_args": {
+            "height": 150,
+            "width": 150,
+        },
+        "control_args": {
+            "height": (10, 512),
+            "width": (10, 512),
+        },
+        "is_compatible_with_bbox": True,
+    },
+    "RandomRotation": {
+        "layer_cls": keras_cv.layers.RandomRotation,
+        "layer_args": {
+            "factor": 0.0,
+            "fill_mode": "reflect",
+            "interpolation": "nearest",
+        },
+        "control_args": {
+            "factor": (0.1, 1.0),
+            "fill_mode": ["reflect", "constant", "wrap", "nearest"],
+            "interpolation": ["nearest", "bilinear"],
+        },
+        "is_compatible_with_bbox": True,
+    },
+    "RandomTranslation": {
+        "layer_cls": keras_cv.layers.RandomTranslation,
+        "layer_args": {
+            "height_factor": 0.0,
+            "width_factor": 0.0,
+            "fill_mode": "reflect",
+            "interpolation": "nearest"
+        },
+        "control_args": {
+            "height_factor": (0.1, 1.0),
+            "width_factor": (0.1, 1.0),
+            "fill_mode": ["reflect", "constant", "wrap", "nearest"],
+            "interpolation": ["nearest", "bilinear"],
+        },
+        "is_compatible_with_bbox": True,
+    },
+    "RandomFlip": {
+        "layer_cls": keras_cv.layers.RandomFlip,
+        "layer_args": {
+            "mode": "horizontal",
+            "rate": 0.5,
+        },
+        "control_args": {
+            "factor": ['horizontal', "vertical", "horizontal_and_vertical"],
+            "interpolation": ["nearest", "bilinear"],
+        },
+        "is_compatible_with_bbox": True,
     },
     "Solarization": {
         "layer_cls": keras_cv.layers.Solarization,
@@ -140,6 +225,7 @@ LAYERS_CONFIG = {
             "addition_factor": (0.0, 1.0),
             "addition_factor": (0.0, 1.0),
         },
+        "is_compatible_with_bbox": False,
     },
     "RandAugment": {
         "layer_cls": keras_cv.layers.RandAugment,
@@ -157,5 +243,38 @@ LAYERS_CONFIG = {
             "geometric": [True, False],
         },
         "is_compatible_with_bbox": True,
+    },
+    "Resizing": {
+        "layer_cls": keras_cv.layers.Resizing,
+        "layer_args": {
+            "height": 150,
+            "width": 150,
+            "interpolation": "bilinear",
+        },
+        "control_args": {
+            "height": [10, 512],
+            "width": [10, 512],
+            "interpolation": ["bilinear", "nearest", "bicubic", "area", "lanczos3", "lanczos5", "gaussian", "mitchellcubic"],
+        },
+        "is_compatible_with_bbox": True,
+    },
+    "Grayscale": {
+        "layer_cls": keras_cv.layers.Grayscale,
+        "layer_args": {
+            "output_channels": 1,
+        },
+        "control_args": {},
+        "is_compatible_with_bbox": False,
+    },
+    "Equalization": {
+        "layer_cls": keras_cv.layers.Equalization,
+        "layer_args": {
+            "value_range": (0, 255),
+            "bins": 0,
+        },
+        "control_args": {
+            "bins": [0, 255]
+        },
+        "is_compatible_with_bbox": False,
     },
 }
