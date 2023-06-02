@@ -53,11 +53,11 @@ LAYERS_CONFIG = {
         "layer_cls": keras_cv.layers.RandomChannelShift,
         "layer_args": {
             "value_range": (0, 255),
-            "factor": (-0.1, 0.1),
+            "factor": 0.0,
             "channels": 3,
         },
         "control_args": {
-            "factor": [-1.0, 1.0],
+            "factor": [0.1, 1.0],
         },
     },
     "RandomColorDegeneration": {
@@ -106,10 +106,10 @@ LAYERS_CONFIG = {
         "layer_cls": keras_cv.layers.RandomSharpness,
         "layer_args": {
             "value_range": (0, 255),
-            "factor": (1.5, 1.5),
+            "factor": 0.0,
         },
         "control_args": {
-            "factor": (0.1, 2.0),
+            "factor": (0.0, 1.0),
         },
     },
     "RandomShear": {
