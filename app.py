@@ -12,7 +12,7 @@ from PIL import Image
 @st.cache_data
 
 def download_images():
-    image_folder = "F:\keras\kerascv-demo\images"
+    image_folder = "images/"
     default_images = {}
     
     for filename in os.listdir(image_folder):
