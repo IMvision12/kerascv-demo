@@ -41,7 +41,7 @@ LAYERS_CONFIG = {
     "GridMask": {
         "layer_cls": keras_cv.layers.GridMask,
         "layer_args": {
-            "ratio_factor": (0, 0.5),
+            "ratio_factor": (0.0, 0.5),
             "rotation_factor": (0.0, 0.0),
             "fill_mode": "constant",
         },
