@@ -1,8 +1,8 @@
 import streamlit as st
 import tensorflow as tf
 
-from bbox_utils import bbox, display_img_with_bbox
-from image_utils import display_aug_image, image_aug
+from utils.bbox_utils import bbox, display_img_with_bbox
+from utils.image_utils import display_aug_image, image_aug
 
 
 def main():
