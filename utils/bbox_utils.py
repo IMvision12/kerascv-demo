@@ -1,6 +1,7 @@
 import io
 import os
 import cv2
+import typing
 
 import numpy as np
 import pandas as pd
@@ -10,7 +11,6 @@ from keras_cv.visualization.draw_bounding_boxes import draw_bounding_boxes
 from PIL import Image
 
 from configs.bbox_config import LAYERS_CONFIG
-from utils import set_control_args
 
 
 def download_images_bbox():
@@ -192,6 +192,29 @@ def display_img_with_bbox(image, bbox, layer, box_format="xywh"):
     with col3:
         st.subheader("Output Image with bbox")
         st.image(aug_image, use_column_width=True)
+
+
+def set_control_args(control_args: typing.Dict, layer_args: typing.Dict):
+    """Use `st.select_slider` or `st.slider` for `control_args` depending on
+    default value.
+    """
+    with st.form(key="control"):
+        new_values = {}
+        for key, value in control_args.items():
+            if isinstance(layer_args[key], str):
+                options = value
+                default_value = layer_args[key]
+                new_value = st.selectbox(key, options=options, index=options.index(default_value))  # Fixed the argument duplication
+            else:
+                min_value = value[0]
+                max_value = value[1]
+                default_value = layer_args[key]
+                new_value = st.slider(key, min_value, max_value, default_value)
+            new_values[key] = new_value
+        submit_button = st.form_submit_button(label="Apply")
+        if submit_button:
+            layer_args.update(new_values)
+    return layer_args
 
 
 def bbox():
