@@ -1,14 +1,9 @@
-import io
-import os
-import typing
-
-import tensorflow as tf
-import numpy as np
 import streamlit as st
-from config import LAYERS_CONFIG
-from PIL import Image
-from image_utils import image_aug, display_aug_image
+import tensorflow as tf
+
 from bbox_utils import bbox, display_img_with_bbox
+from image_utils import display_aug_image, image_aug
+
 
 def main():
     st.set_page_config(
@@ -23,7 +18,9 @@ def main():
 
     with st.sidebar:
         st.subheader("Choose Agumentation Type: ")
-        option = st.selectbox("Select an option", ("Image", "Bounding-Box", "Segmentation"))
+        option = st.selectbox(
+            "Select an option", ("Image", "Bounding-Box", "Segmentation")
+        )
 
         if option == "Image":
             layer, image = image_aug()

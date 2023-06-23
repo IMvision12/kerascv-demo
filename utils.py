@@ -1,13 +1,7 @@
-import io
-import os
 import typing
 
-import tensorflow as tf
-import numpy as np
 import streamlit as st
-from config import LAYERS_CONFIG
-from PIL import Image
-import xml.etree.ElementTree as ET
+
 
 def set_control_args(control_args: typing.Dict, layer_args: typing.Dict):
     """Use `st.select_slider` or `st.slider` for `control_args` depending on
@@ -30,19 +24,3 @@ def set_control_args(control_args: typing.Dict, layer_args: typing.Dict):
         if submit_button:
             layer_args.update(new_values)
     return layer_args
-
-
-def parse_annotation(xml_file):
-    tree = ET.parse(xml_file)
-    root = tree.getroot()
-
-    boxes = []
-    for obj in root.iter("object"):
-        bbox = obj.find("bndbox")
-        xmin = float(bbox.find("xmin").text)
-        ymin = float(bbox.find("ymin").text)
-        xmax = float(bbox.find("xmax").text)
-        ymax = float(bbox.find("ymax").text)
-        boxes.append([xmin, ymin, xmax, ymax])
-
-    return boxes
