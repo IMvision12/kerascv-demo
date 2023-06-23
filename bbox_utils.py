@@ -1,21 +1,17 @@
 import io
 import os
-import typing
-import requests
+import cv2
 
-import tensorflow as tf
 import numpy as np
+import pandas as pd
 import streamlit as st
-from PIL import Image
-import pandas as pd
-
-from utils import set_control_args
-from config import LAYERS_CONFIG
+import tensorflow as tf
 from keras_cv.visualization.draw_bounding_boxes import draw_bounding_boxes
+from PIL import Image
 
+from configs.bbox_config import LAYERS_CONFIG
+from utils import set_control_args
 
-import os
-import pandas as pd
 
 def download_images_bbox():
     root_dir = "images/"
@@ -63,7 +59,6 @@ def download_images_bbox():
     return default_images
 
 
-
 def image_dropdown(image_dict=download_images_bbox()):
     st.subheader("Select an Image")
     image_option = st.selectbox(
@@ -72,14 +67,14 @@ def image_dropdown(image_dict=download_images_bbox()):
         index=0,
         key="image_option",
     )
-    
+
     with st.expander("Upload an image"):
         uploaded_image = st.file_uploader(
             "dummy",
             type=["jpg", "jpeg", "png"],
             label_visibility="collapsed",
         )
-    
+
     if uploaded_image is not None:
         st.subheader("Select BBox Type")
         options = st.selectbox(
@@ -88,7 +83,7 @@ def image_dropdown(image_dict=download_images_bbox()):
             index=0,
         )
         image = Image.open(uploaded_image).convert("RGB")
-        
+
         if options == "xywh":
             boxes = pd.DataFrame({"x": [0], "y": [0], "w": [0], "h": [0]})
         elif options == "xyxy":
@@ -97,7 +92,7 @@ def image_dropdown(image_dict=download_images_bbox()):
         image_data = image_dict[image_option]
         image = Image.open(io.BytesIO(image_data["image"])).convert("RGB")
         boxes = image_data["boxes"]
-    
+
     return np.array(image), boxes
 
 
@@ -109,19 +104,21 @@ def Preprocessing(layer, image, box_format="xywh", boxes=None):
         'classes': Tensor(shape=[batch, num_boxes])
     }
 
-    Input Format : {"images": tf.cast(image, tf.float32), 
+    Input Format : {"images": tf.cast(image, tf.float32),
                     "bounding_boxes": bounding_boxes}
 
     Reference : https://keras.io/guides/keras_cv/object_detection_keras_cv/
     """
     image = image.copy()
-    inputs = {"images": tf.expand_dims(tf.convert_to_tensor(image, dtype=tf.float32), axis=0)}
+    inputs = {
+        "images": tf.expand_dims(tf.convert_to_tensor(image, dtype=tf.float32), axis=0)
+    }
 
     if boxes is not None:
         boxes = tf.expand_dims(tf.convert_to_tensor(boxes, dtype=tf.float32), axis=0)
         inputs["bounding_boxes"] = {
             "boxes": boxes,
-            "classes": tf.zeros(shape=boxes.shape[:-1])
+            "classes": tf.zeros(shape=boxes.shape[:-1]),
         }
 
     bounding_boxes = inputs.get("bounding_boxes", {}).copy()
@@ -147,22 +144,23 @@ def Preprocessing(layer, image, box_format="xywh", boxes=None):
 
 def select_layer_bbox_aug():
     st.subheader("Select a Layer")
-    compatible_layers = [layer for layer, config in LAYERS_CONFIG.items() if config["is_compatible_with_bbox"]]
-    layer_option = st.selectbox("Select an option", compatible_layers, index=0, key="layer_option")
+    layer_option = st.selectbox(
+        "Select an option", list(LAYERS_CONFIG.keys()), index=0, key="layer_option"
+    )
     layer_config = LAYERS_CONFIG[layer_option]
-    
+
     # Extract relevant information from layer_config
     layer_cls = layer_config["layer_cls"]
     layer_args = layer_config["layer_args"]
     control_args = layer_config["control_args"]
     box_format = layer_args["bounding_box_format"]
-    
+
     # Set control arguments
     layer_args = set_control_args(control_args, layer_args)
-    
+
     # Instantiate layer
     layer = layer_cls(**layer_args)
-    
+
     return layer, box_format
 
 
@@ -173,14 +171,14 @@ def display_editable_table(boxes):
         "w": st.column_config.NumberColumn(default=0, format="%d"),
         "h": st.column_config.NumberColumn(default=0, format="%d"),
     }
-    
+
     boxes = st.data_editor(
         boxes,
         num_rows="dynamic",
         column_config=column_config,
         hide_index=True,
     )
-    
+
     np_boxes = np.array(boxes.values.tolist())
     return np_boxes
 

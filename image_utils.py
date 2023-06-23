@@ -2,20 +2,25 @@ import io
 import os
 import typing
 
-import tensorflow as tf
 import numpy as np
 import streamlit as st
-from config import LAYERS_CONFIG
+import tensorflow as tf
 from PIL import Image
+
+from configs.img_config import LAYERS_CONFIG
 from utils import set_control_args
 
 
 def download_images():
     image_folder = "images/"
     default_images = {}
-    
+
     for filename in os.listdir(image_folder):
-        if filename.endswith(".jpg") or filename.endswith(".jpeg") or filename.endswith(".png"):
+        if (
+            filename.endswith(".jpg")
+            or filename.endswith(".jpeg")
+            or filename.endswith(".png")
+        ):
             image_path = os.path.join(image_folder, filename)
             with open(image_path, "rb") as f:
                 default_images[filename] = f.read()
@@ -32,10 +37,10 @@ def process_image(image, layer):
 def image_aug(image_dict=download_images()):
     st.subheader("Select an Image")
     image_option = st.selectbox(
-            "Select an option",
-            ["Default Image"] + list(image_dict.keys()),
-            index=0,
-            key="image_option",
+        "Select an option",
+        ["Default Image"] + list(image_dict.keys()),
+        index=0,
+        key="image_option",
     )
     uploaded_image = None
     if image_option == "Default Image":
@@ -67,7 +72,9 @@ def display_aug_image(layer, image):
 
 def select_layer_for_image_aug():
     st.subheader("Select a Layer")
-    layer_option = st.selectbox("Select an option", list(LAYERS_CONFIG.keys()), index=0, key="layer_option")
+    layer_option = st.selectbox(
+        "Select an option", list(LAYERS_CONFIG.keys()), index=0, key="layer_option"
+    )
     layer_cls = LAYERS_CONFIG[layer_option]["layer_cls"]
     layer_args = LAYERS_CONFIG[layer_option]["layer_args"]
     control_args = LAYERS_CONFIG[layer_option]["control_args"]
