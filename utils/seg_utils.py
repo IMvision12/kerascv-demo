@@ -62,7 +62,7 @@ def download_images_seg():
 
     image_data = {
         "city": {"image_name": "image_1.png", "mask_name": "mask_1.png"},
-        "aerial": {"image_name": "image_2.png", "mask_name": "mask_2.png"}
+        "aerial": {"image_name": "image_2.jpg", "mask_name": "mask_2.png"},
     }
 
     for name, image_info in image_data.items():
