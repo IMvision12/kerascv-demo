@@ -58,9 +58,9 @@ def download_images_seg():
     default_images = {}
 
     image_data = {
-        "dog": {
-            "image_name": "dog_image.jpg",
-            "mask_name": "dog_mask.png"
+        "city": {
+            "image_name": "image_1.png",
+            "mask_name": "mask_1.png"
         },
     }
 
@@ -95,6 +95,7 @@ def image_dropdown(image_dict=download_images_seg()):
     mask = Image.open(io.BytesIO(image_data["mask"])).convert("RGB")
 
     return np.array(image), np.array(mask)
+
 
 def Preprocessing(layer, image, mask):
     """
