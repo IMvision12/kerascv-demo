@@ -120,14 +120,14 @@ def display_img_with_mask(inputs, outputs):
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("Input Images with bbox")
-        st.image(np.array(inputs['images']).astype(np.uint8), use_column_width=True, caption='Image 1')
-        st.image(np.array(inputs['segmentation_masks']).astype(np.uint8), use_column_width=True, caption='Image 2')
+        st.subheader("Input Image and Mask")
+        st.image(np.array(inputs['images']).astype(np.uint8), use_column_width=True, caption='Image')
+        st.image(np.array(inputs['segmentation_masks']).astype(np.uint8), use_column_width=True, caption='Augmented Mask')
             
     with col2:
-        st.subheader("Output Images with bbox")
-        st.image(np.array(outputs["images"]).astype(np.uint8), use_column_width=True, caption='Image 3')
-        st.image(np.array(outputs["segmentation_masks"]).astype(np.uint8), use_column_width=True, caption='Image 4')
+        st.subheader("Output Image and Mask")
+        st.image(np.array(outputs["images"]).astype(np.uint8), use_column_width=True, caption='Augmented Image')
+        st.image(np.array(outputs["segmentation_masks"]).astype(np.uint8), use_column_width=True, caption='Augmented Mask')
 
 
 
