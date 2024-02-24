@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import tensorflow as tf
-from keras_cv.visualization.draw_bounding_boxes import draw_bounding_boxes
+from keras_cv.visualization import draw_bounding_boxes
 from PIL import Image
 
 from configs.bbox_config import LAYERS_CONFIG

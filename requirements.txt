@@ -1,5 +1,5 @@
 pycocotools
-tensorflow-cpu~=2.12.0
-keras-cv>=0.5.0
-streamlit~=1.23.1
-opencv-python-headless==4.5.3.56
+tensorflow-cpu
+keras-cv
+streamlit
+opencv-python-headless
